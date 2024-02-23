@@ -1,0 +1,76 @@
+@use "base"
+@use "fonts"
+
+@keyframes show_cell
+  0%
+    transform: translateY(-50%)
+    opacity: 0
+  100%
+    transform: translateY(0)
+    opacity: 1
+
+button
+  background: none
+  border: none
+  outline: none
+  font-size: 24px
+  font-weight: bold
+  color: white
+
+  cursor: pointer
+  font-family: "Noto Sans JP", sans-serif
+
+#app
+  background-color: green
+  color: #eee
+
+  display: flex
+  flex-direction: column
+  align-items: center
+  justify-content: space-between
+
+  padding: 20px
+
+  font-family: "Noto Sans JP", sans-serif
+
+  .start-header, .game-header
+    display: flex
+    align-items: center
+    column-gap: 5px
+    margin-left: auto
+
+    .score
+      font-size: 18px
+
+  h1
+    font-family: "Courgette", cursive
+    font-size: 100px
+    color: greenyellow
+
+  .board
+    background-color: white
+    height: calc(100vh - 80px)
+    width: calc(100vh - 80px)
+    display: grid
+    grid-template-columns: repeat(10, 1fr)
+    column-gap: 3px
+    row-gap: 3px
+    padding: 10px
+
+    .cell
+      border: 1px solid #ccc
+      border-radius: 5px
+
+      animation: 0.3s show_cell ease
+
+      &.snake
+        background-color: yellowgreen
+
+  .buttons
+    height: 30%
+
+    button
+
+      &:hover, &.active
+        color: white
+        text-shadow: #535bf2 0 0 5px, #535bf2 0 0 10px, #535bf2 0 0 15px, #535bf2 0 0 30px
