@@ -1,15 +1,15 @@
+import {Coords} from "./coords.ts";
+
 type Direction = 'right' | 'left' | 'top' | 'down';
-type Coords = {x: number, y: number}
+
 
 export class Snake {
     private _direction: Direction = "right"
-    coords: Coords[] = [{x: 1, y: 1}]
+    coords: Coords[] = [new Coords(1, 1)]
+    private _growth: number = 0
 
     growth(foodPower: number) {
-        const tail = this.coords[-1]
-        const pretail = this.coords[-2]
-
-        console.log(tail, pretail, foodPower)
+        this._growth = foodPower
     }
 
     get length() {
@@ -26,12 +26,41 @@ export class Snake {
     }
 
     move() {
-        const head = this.coords[0]
-
-        console.log(head)
+        let newHead: Coords
 
         switch (this._direction) {
-
+            case 'right':
+                newHead = new Coords(this.head.x + 1, this.head.y)
+                break
+            case 'left':
+                newHead = new Coords(this.head.x - 1, this.head.y)
+                break
+            case 'top':
+                newHead = new Coords(this.head.x, this.head.y - 1)
+                break
+            case 'down':
+                newHead = new Coords(this.head.x, this.head.y + 1)
+                break
         }
+
+        if (newHead.x < 1 || newHead.x > 10 || newHead.y < 1 || newHead.y > 10) return false
+
+        this.coords.unshift(newHead)
+
+        if (this.length > 1 && this._growth < 1) {
+            this.coords.pop()
+        } else {
+            this._growth--
+        }
+
+        return true
+    }
+
+    get head() {
+        return this.coords[0]
+    }
+
+    get tail() {
+        return this.coords[this.coords.length - 1]
     }
 }

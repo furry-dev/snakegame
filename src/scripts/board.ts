@@ -1,4 +1,5 @@
-import {Snake} from "./snake.ts";
+import {Snake} from "./snake.ts"
+import {Food} from "./food.ts"
 
 export class Board {
     private _board: HTMLElement
@@ -28,11 +29,28 @@ export class Board {
 
     placeSnake(snake: Snake) {
         snake.coords.forEach(coords => {
-            this.getCell(coords.x, coords.y)!.classList.add('snake')
+            this.getCell(coords.x, coords.y)?.classList.add('snake')
         })
     }
 
-    getCell(x: number, y: number) {
+    placeFood(food: Food) {
+        this._board.querySelectorAll(`.cell.food`).forEach(value => {
+            if (!(value instanceof HTMLElement)) return false
+            value.classList.remove('food')
+            value.style.removeProperty('background')
+        })
+        const cell = this.getCell(food.coords.x, food.coords.y)
+        if (!cell) return false
+        cell.style.background = `url("${food.view}") center / contain no-repeat`
+        cell.classList.add('food')
+    }
+
+    moveSnake(snake: Snake) {
+        this._board.querySelectorAll(`.cell.snake`).forEach(value => value.classList.remove('snake'))
+        this.placeSnake(snake)
+    }
+
+    getCell(x: number, y: number): HTMLElement | null {
         return this._board.querySelector(`.cell[data-x="${x}"][data-y="${y}"]`)
     }
 }
