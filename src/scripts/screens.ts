@@ -55,3 +55,7 @@ export class GameScreen {
         return this._score
     }
 }
+
+export class EndScreen {
+
+}

@@ -1,11 +1,11 @@
-import {Coords} from "./coords.ts";
+import {Coords, CoordsList} from "./coords.ts";
 
 type Direction = 'right' | 'left' | 'top' | 'down';
 
 
 export class Snake {
     private _direction: Direction = "right"
-    coords: Coords[] = [new Coords(1, 1)]
+    coords: CoordsList = new CoordsList(new Coords(1, 1))
     private _growth: number = 0
 
     growth(foodPower: number) {
@@ -17,7 +17,20 @@ export class Snake {
     }
 
     setDirection(direction: Direction) {
-        if (direction == this._direction) return false
+        switch (direction) {
+            case "right":
+                if (this._direction === "left" && this.length > 1) return false
+                break
+            case "left":
+                if (this._direction === "right" && this.length > 1) return false
+                break
+            case "top":
+                if (this._direction === "down" && this.length > 1) return false
+                break
+            case "down":
+                if (this._direction === "top" && this.length > 1) return false
+                break
+        }
         this._direction = direction
     }
 
@@ -43,7 +56,7 @@ export class Snake {
                 break
         }
 
-        if (newHead.x < 1 || newHead.x > 10 || newHead.y < 1 || newHead.y > 10) return false
+        if (newHead.x < 1 || newHead.x > 10 || newHead.y < 1 || newHead.y > 10 || this.coords.hasCoords(newHead)) return false
 
         this.coords.unshift(newHead)
 

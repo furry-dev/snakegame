@@ -2,7 +2,7 @@ import {StartScreen, GameScreen} from './screens.ts'
 import {Board} from './board.ts'
 import {Snake} from './snake.ts'
 import {Apple, Food} from './food.ts'
-import {Coords} from "./coords.ts";
+import {Coords, CoordsList} from "./coords.ts";
 import {randomIntFromInterval} from "./utils.ts";
 
 
@@ -60,6 +60,7 @@ export class Game {
     }
 
     private startGame() {
+        console.log(this.snake.coords[0])
         this.gameScreen.show()
         this.gameScreen._board.placeSnake(this.snake)
         this.placeFood()
@@ -73,7 +74,7 @@ export class Game {
     restartGame() {
         this.stopGame()
         this.gameScreen.score = 0
-        this.snake.coords = [new Coords(1, 1)]
+        this.snake.coords = new CoordsList(new Coords(1, 1))
         this.snake.setDirection('right')
         this.board?.placeSnake(this.snake)
         this.placeFood()
@@ -88,6 +89,7 @@ export class Game {
         if (this.food && this.snake.head.isEqual(this.food.coords)) {
             this.snake.growth(this.food.power)
             this.gameScreen.score += this.food.power
+            if (this.gameScreen.score > (parseInt(localStorage.getItem("record") || "0"))) localStorage.setItem("record", String(this.gameScreen.score))
             this.placeFood()
         }
         requestAnimationFrame(() => this.gameScreen._board.moveSnake(this.snake))
