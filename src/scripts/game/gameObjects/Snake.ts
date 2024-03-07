@@ -1,4 +1,5 @@
-import {Coords, CoordsList} from "./coords.ts";
+import {Coords} from "../models"
+import {CoordsList} from "../models"
 
 type Direction = 'right' | 'left' | 'top' | 'down';
 

@@ -1,5 +1,5 @@
-import {Snake} from "./snake.ts"
-import {Food} from "./food.ts"
+import {Snake} from "../gameObjects"
+import {Food} from "../gameObjects"
 
 export class Board {
     private _board: HTMLElement

@@ -1,14 +1,15 @@
-import {StartScreen, GameScreen} from './screens.ts'
-import {Board} from './board.ts'
-import {Snake} from './snake.ts'
-import {Apple, Food} from './food.ts'
-import {Coords, CoordsList} from "./coords.ts";
-import {randomIntFromInterval} from "./utils.ts";
+import {StartScreen} from "../views"
+import {GameScreen} from '../views'
+import {Snake} from '../gameObjects'
+import {Apple} from '../gameObjects'
+import {Food} from '../gameObjects'
+import {Coords} from "../models"
+import {CoordsList} from "../models"
+import {randomIntFromInterval} from "../utils"
 
 
 export class Game {
     private readonly container
-    private board: Board | undefined
     private readonly snake: Snake
     private food: Food | undefined
     private gameLoop: number | undefined
@@ -18,9 +19,6 @@ export class Game {
     constructor(element: HTMLElement) {
         this.container = element
         this.snake = new Snake()
-
-        this.container.tabIndex = 1
-        this.container.focus()
 
         StartScreen.show(this.container)
         this.gameScreen = new GameScreen(this.container)
@@ -33,10 +31,11 @@ export class Game {
             if (!(target instanceof HTMLElement)) return false
 
             if (target.closest('.start')) {
+                this.gameScreen.show()
                 this.startGame()
             }
         })
-        this.container.addEventListener('keydown', (e) => {
+        document.addEventListener('keydown', (e) => {
             switch (e.key) {
                 case "ArrowUp":
                     this.snake.setDirection("top")
@@ -55,16 +54,20 @@ export class Game {
     }
 
     private placeFood() {
-        this.food = new Apple(new Coords(randomIntFromInterval(1, 10), randomIntFromInterval(1, 10)))
+        let coords = new Coords(randomIntFromInterval(1, 10), randomIntFromInterval(1, 10))
+        while (this.snake.coords.hasCoords(coords)) {
+            coords = new Coords(randomIntFromInterval(1, 10), randomIntFromInterval(1, 10))
+        }
+        this.food = new Apple(coords)
         this.gameScreen._board.placeFood(this.food)
     }
 
     private startGame() {
-        console.log(this.snake.coords[0])
-        this.gameScreen.show()
         this.gameScreen._board.placeSnake(this.snake)
         this.placeFood()
         this.gameLoop = setInterval(this.render.bind(this), this.speed)
+        this.gameScreen.score = this.snake.length
+        this.gameScreen._timer.start()
     }
 
     stopGame() {
@@ -73,12 +76,9 @@ export class Game {
 
     restartGame() {
         this.stopGame()
-        this.gameScreen.score = 0
         this.snake.coords = new CoordsList(new Coords(1, 1))
         this.snake.setDirection('right')
-        this.board?.placeSnake(this.snake)
-        this.placeFood()
-        this.gameLoop = setInterval(this.render.bind(this), this.speed)
+        this.startGame()
     }
 
     private render() {

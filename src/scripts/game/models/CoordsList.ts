@@ -1,10 +1,4 @@
-export class Coords {
-    constructor(public x: number, public y: number) {}
-
-    isEqual(coords: Coords) {
-        return this.x === coords.x && this.y === coords.y
-    }
-}
+import {Coords} from "./Coords.ts";
 
 export class CoordsList extends Array<Coords> {
     constructor(...items: Coords[]) {
