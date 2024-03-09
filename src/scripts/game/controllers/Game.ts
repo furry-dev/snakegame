@@ -1,4 +1,4 @@
-import {StartScreen} from "../views"
+import {EndScreen, StartScreen} from "../views"
 import {GameScreen} from '../views'
 import {Snake} from '../gameObjects'
 import {Apple} from '../gameObjects'
@@ -34,6 +34,9 @@ export class Game {
                 this.gameScreen.show()
                 this.startGame()
             }
+            if (target.closest('button[type="reset"]')) {
+                this.restartGame()
+            }
         })
         document.addEventListener('keydown', (e) => {
             switch (e.key) {
@@ -65,17 +68,18 @@ export class Game {
     private startGame() {
         this.gameScreen._board.placeSnake(this.snake)
         this.placeFood()
-        this.gameLoop = setInterval(this.render.bind(this), this.speed)
         this.gameScreen.score = this.snake.length
-        this.gameScreen._timer.start()
+        this.gameLoop = setInterval(this.render.bind(this), this.speed)
+        this.gameScreen._timer.restart()
     }
 
     stopGame() {
         clearInterval(this.gameLoop)
+        this.gameScreen._timer.stop()
     }
 
     restartGame() {
-        this.stopGame()
+        EndScreen.hide(this.container)
         this.snake.coords = new CoordsList(new Coords(1, 1))
         this.snake.setDirection('right')
         this.startGame()
@@ -83,8 +87,8 @@ export class Game {
 
     private render() {
         if (!this.snake.move()) {
-            alert("Dead")
-            return this.restartGame()
+            EndScreen.show(this.container, this.gameScreen.score, this.gameScreen._timer.time)
+            this.stopGame()
         }
         if (this.food && this.snake.head.isEqual(this.food.coords)) {
             this.snake.growth(this.food.power)

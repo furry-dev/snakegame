@@ -75,3 +75,60 @@ button
       &:hover, &.active
         color: white
         text-shadow: #535bf2 0 0 5px, #535bf2 0 0 10px, #535bf2 0 0 15px, #535bf2 0 0 30px
+
+  .end-game
+    position: fixed
+    top: 50%
+    left: 50%
+    transform: translate(-50%, -50%)
+
+    width: 80%
+    max-width: 500px
+
+    padding: 20px
+    background-color: #fafafa
+
+    display: flex
+    flex-direction: column
+    align-items: center
+    row-gap: 15px
+
+    border-radius: 15px
+    box-shadow: 0 0 10px 3px rgba(100, 100, 100, 0.2)
+
+    h3
+      color: yellowgreen
+
+      font-size: 28px
+
+    .data
+      display: flex
+      align-items: center
+      justify-content: space-evenly
+
+      width: 100%
+
+      font-size: 24px
+
+      color: darkgray
+
+    .buttons
+      display: flex
+      align-items: center
+      justify-content: space-evenly
+
+      button
+        background-color: yellowgreen
+
+        padding: 0.1rem 0.5rem
+        font-size: 24px
+        border-radius: 10px
+
+        transition: all 0.5s ease-out
+
+        &:hover
+          text-shadow: none
+
+          background-color: rgba(154, 205, 50, 0)
+          color: yellowgreen
+

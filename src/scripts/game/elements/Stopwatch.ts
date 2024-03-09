@@ -21,10 +21,19 @@ export class Stopwatch extends HTMLDivElement {
         clearInterval(this.intervalId)
     }
 
-    updateTime() {
+    restart() {
+        this.seconds = 0
+        this.start()
+    }
+
+    get time() {
         const minutes = Math.floor(this.seconds / 60)
         const remainingSeconds = this.seconds % 60
-        this.innerHTML = `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`
+        return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`
+    }
+
+    updateTime() {
+        this.innerHTML = this.time
     }
 }
 
