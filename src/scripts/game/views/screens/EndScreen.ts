@@ -5,6 +5,7 @@ export class EndScreen {
 
         endDiv.innerHTML = `
             <h3>End of the game!</h3>
+            ${score > parseInt(localStorage.getItem('old-record') || "0") ? "<h4 class='new-record'>New record!</h4>" : ""}
             <div class="data">
                 <div class="score">${score}</div>
                 <div class="time">${time}</div>

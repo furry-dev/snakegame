@@ -66,6 +66,8 @@ export class Game {
     }
 
     private startGame() {
+        localStorage.setItem("old-record", localStorage.getItem("record") || "0")
+
         this.gameScreen._board.placeSnake(this.snake)
         this.placeFood()
         this.gameScreen.score = this.snake.length
@@ -94,7 +96,10 @@ export class Game {
         if (this.food && this.snake.head.isEqual(this.food.coords)) {
             this.snake.growth(this.food.power)
             this.gameScreen.score += this.food.power
-            if (this.gameScreen.score > (parseInt(localStorage.getItem("record") || "0"))) localStorage.setItem("record", String(this.gameScreen.score))
+
+            if (this.gameScreen.score > parseInt(localStorage.getItem("record") || "0")) {
+                localStorage.setItem("record", String(this.gameScreen.score))
+            }
             this.placeFood()
         }
         requestAnimationFrame(() => this.gameScreen._board.moveSnake(this.snake))
