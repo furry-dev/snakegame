@@ -79,6 +79,7 @@ export class Game {
     }
 
     restartGame() {
+        this.gameScreen._board.clearBoard()
         EndScreen.hide(this.container)
         this.snake.coords = new CoordsList(new Coords(1, 1))
         this.snake.setDirection('right')

@@ -37,21 +37,34 @@ export class Board {
         })
     }
 
+    removeSnake() {
+        this._board.querySelectorAll(`.cell.snake`).forEach(value => value.classList.remove('snake'))
+    }
+
     placeFood(food: Food) {
-        this._board.querySelectorAll(`.cell.food`).forEach(value => {
-            if (!(value instanceof HTMLElement)) return false
-            value.classList.remove('food')
-            value.style.removeProperty('background')
-        })
+        this.removeFood()
         const cell = this.getCell(food.coords.x, food.coords.y)
         if (!cell) return false
         cell.style.background = `url("${food.view}") center / contain no-repeat`
         cell.classList.add('food')
     }
 
+    removeFood() {
+        this._board.querySelectorAll(`.cell.food`).forEach(value => {
+            if (!(value instanceof HTMLElement)) return false
+            value.classList.remove('food')
+            value.style.removeProperty('background')
+        })
+    }
+
     moveSnake(snake: Snake) {
-        this._board.querySelectorAll(`.cell.snake`).forEach(value => value.classList.remove('snake'))
+        this.removeSnake()
         this.placeSnake(snake)
+    }
+
+    clearBoard() {
+        this.removeFood()
+        this.removeSnake()
     }
 
     getCell(x: number, y: number): HTMLElement | null {
