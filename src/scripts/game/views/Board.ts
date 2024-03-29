@@ -47,6 +47,7 @@ export class Board {
         if (!cell) return false
         cell.style.background = `url("${food.view}") center / contain no-repeat`
         cell.classList.add('food')
+        return true
     }
 
     removeFood() {

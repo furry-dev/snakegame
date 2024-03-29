@@ -57,12 +57,14 @@ export class Game {
     }
 
     private placeFood() {
+        if (this.snake.length > 99) return false
+
         let coords = new Coords(randomIntFromInterval(1, 10), randomIntFromInterval(1, 10))
         while (this.snake.coords.hasCoords(coords)) {
             coords = new Coords(randomIntFromInterval(1, 10), randomIntFromInterval(1, 10))
         }
         this.food = new Apple(coords)
-        this.gameScreen._board.placeFood(this.food)
+        return this.gameScreen._board.placeFood(this.food)
     }
 
     private startGame() {
@@ -100,6 +102,9 @@ export class Game {
             if (this.gameScreen.score > parseInt(localStorage.getItem("record") || "0")) {
                 localStorage.setItem("record", String(this.gameScreen.score))
             }
+
+            if (this.snake.length > 99) return EndScreen.show(this.container, this.gameScreen.score, this.gameScreen._timer.time)
+
             this.placeFood()
         }
         requestAnimationFrame(() => this.gameScreen._board.moveSnake(this.snake))
