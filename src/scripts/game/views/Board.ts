@@ -8,6 +8,10 @@ export class Board {
         this._board = element
         this._board.innerHTML = ``
 
+        this.drawCells()
+    }
+
+    drawCells() {
         let currentTen = 10
         let x = 0
         let y = 1
